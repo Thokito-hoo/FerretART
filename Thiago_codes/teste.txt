@@ -1,0 +1,647 @@
+
+import random
+
+RACAS = {
+    "anão": ["montanha", "colina"],
+    "draconato": None,
+    "elfo": ["alto", "drow", "floresta"],
+    "gnomo": ["floresta", "pedras"],
+    "halfling": ["pés-leves", "robusto"],
+    "humano": ["comum", "variante"],
+    "meio-elfo": None,
+    "meio-orc": None,
+    "tiefling": None,
+}
+
+SUB_RACAS = {
+    "anão (montanha)": {"força": 2, "constituição": 2},
+    "anão (colina)": {"sabedoria": 1, "constituição": 2},
+    "elfo (alto)": {"destreza": 2, "inteligência": 1},
+    "elfo (drow)": {"destreza": 2, "carisma": 1},
+    "elfo (floresta)": {"destreza": 2, "sabedoria": 1},
+    "gnomo (floresta)": {"inteligência": 2, "destreza": 1},
+    "gnomo (pedras)": {"inteligência": 2, "constituição": 1},
+    "halfling (pés-leves)": {"destreza": 2, "carisma": 1},
+    "halfling (robusto)": {"destreza": 2, "constituição": 1},
+}
+
+RACAS_ESCOLHA = {
+    "humano (variante)": 2,
+    "meio-elfo": 2,
+}
+
+CLASSES_DADO_VIDA = {
+    "bárbaro": 12,
+    "bardo": 8,
+    "bruxo": 8,
+    "clérigo": 8,
+    "druida": 8,
+    "feiticeiro": 6,
+    "guerreiro": 10,
+    "ladino": 8,
+    "mago": 6,
+    "monge": 8,
+    "paladino": 10,
+    "patrulheiro": 10,
+}
+
+ATRIBUTOS_BASE = [
+    "força",
+    "destreza",
+    "constituição",
+    "inteligência",
+    "sabedoria",
+    "carisma",
+]
+
+EQUIPAMENTOS_POR_CLASSE = {
+    "bárbaro": [
+        ("Machado grande ou qualquer arma marcial corpo-a-corpo (escreva): ", None),
+        ("Duas machadinhas ou qualquer arma simples (escreva): ", None),
+        (None, "pacote de explorador"),
+        (None, "quatro azagaias"),
+    ],
+    "bardo": [
+        ("Uma rapieira, espada longa ou uma besta leve: ", None),
+        ("Um pacote de diplomata ou um pacote de artista: ", None),
+        ("Um alaúde ou qualquer outro instrumento musical: ", None),
+        (None, "uma armadura de couro"),
+        (None, "uma adaga"),
+    ],
+    "bruxo": [
+        ("Uma besta leve ou qualquer arma simples: ", None),
+        ("Uma bolsa de componentes ou um foco arcano: ", None),
+        ("Um pacote de estudioso ou um pacote de masmorreiro: ", None),
+        (None, "uma armadura de couro"),
+        ("Qualquer arma simples: ", None),
+        (None, "duas adagas"),
+    ],
+    "clérigo": [
+        ("Uma maça ou um martelo de guerra: ", None),
+        ("Uma brunea, armadura de couro ou cota de malha: ", None),
+        ("Uma besta leve ou qualquer arma simples: ", None),
+        ("Um pacote de sacerdote ou um pacote de explorador: ", None),
+        (None, "um escudo"),
+        (None, "um símbolo sagrado"),
+    ],
+    "druida": [
+        ("Um escudo de madeira ou qualquer arma simples: ", None),
+        ("Uma cimitarra ou qualquer arma simples corpo-a-corpo: ", None),
+        (None, "uma armadura de couro"),
+        (None, "um pacote de explorador"),
+        (None, "um foco druídico"),
+    ],
+    "feiticeiro": [
+        ("Uma besta leve ou qualquer arma simples: ", None),
+        ("Uma bolsa de componentes ou um foco arcano: ", None),
+        ("Um pacote de masmorreiro ou um pacote de explorador: ", None),
+        (None, "duas adagas"),
+    ],
+    "ladino": [
+        ("Uma rapieira ou uma espada curta: ", None),
+        ("Arco curto ou espada curta: ", None),
+        ("Um pacote de assaltante, pacote de masmorreiro ou pacote de explorador: ", None),
+        (None, "armadura de couro"),
+        (None, "duas adagas"),
+        (None, "um conjunto de ferramentas de ladrão"),
+    ],
+    "mago": [
+        ("Um cajado ou uma adaga: ", None),
+        ("Uma bolsa de componentes ou um foco arcano: ", None),
+        ("Um pacote de erudito ou um pacote de explorador: ", None),
+        (None, "um grimório"),
+    ],
+    "monge": [
+        ("Uma espada curta ou qualquer arma simples: ", None),
+        ("Um pacote de masmorreiro ou um pacote de explorador: ", None),
+        (None, "10 dardos"),
+    ],
+    "patrulheiro": [
+        ("Uma brunea ou armadura de couro: ", None),
+        ("Duas espadas curtas ou duas armas simples: ", None),
+        ("Pacote de masmorreiro ou pacote de explorador: ", None),
+        ("Um pacote de explorador ou um pacote de erudito: ", None),
+        (None, "um arco longo"),
+    ],
+}
+
+
+def escolher_raca():
+    while True:
+        raca = input(
+            "\nDigite qual raça deseja ser:"
+            "\n- Anão"
+            "\n- Draconato"
+            "\n- Elfo"
+            "\n- Gnomo"
+            "\n- Halfling"
+            "\n- Humano"
+            "\n- Meio-Elfo"
+            "\n- Meio-Orc"
+            "\n- Tiefling"
+            "\n\nR: "
+        ).strip().lower()
+
+        if raca not in RACAS:
+            print("Raça inválida!")
+            continue
+
+        subtipos = RACAS[raca]
+
+        if subtipos:
+            while True:
+                print(f"\nSub-raças disponíveis para {raca.title()}:")
+                for subtipo in subtipos:
+                    print(f"- {subtipo}")
+
+                sub = input("Digite a sub-raça: ").strip().lower()
+
+                if sub in subtipos:
+                    raca_completa = f"{raca} ({sub})"
+                    break
+
+                print("Sub-raça inválida!")
+
+        elif raca == "humano":
+            while True:
+                tipo = input("Deseja ser Humano comum ou variante? ").strip().lower()
+
+                if tipo in ("comum", "variante"):
+                    raca_completa = f"humano ({tipo})"
+                    break
+
+                print("Tipo de humano inválido!")
+
+        else:
+            raca_completa = raca
+
+        confirma = input(
+            f"Tem certeza que deseja ser {raca_completa.title()}? (s/n): "
+        ).strip().lower()
+
+        if confirma == "s":
+            return raca_completa
+
+
+def pedir_nivel():
+    while True:
+        try:
+            nivel = int(input("Digite o seu nível de personagem de 1 a 20: "))
+
+            if 1 <= nivel <= 20:
+                return nivel
+
+            print("Nível inválido! Digite um valor entre 1 e 20.")
+
+        except ValueError:
+            print("Entrada inválida! Digite um número inteiro.")
+
+
+def calcular_proficiencia(nivel):
+    if nivel <= 4:
+        return 2
+    if nivel <= 8:
+        return 3
+    if nivel <= 12:
+        return 4
+    if nivel <= 16:
+        return 5
+    return 6
+
+
+def escolher_classe():
+    while True:
+        classe = input(
+            "\nDigite qual classe deseja ser:"
+            "\n- Bárbaro"
+            "\n- Bardo"
+            "\n- Bruxo"
+            "\n- Clérigo"
+            "\n- Druida"
+            "\n- Feiticeiro"
+            "\n- Guerreiro"
+            "\n- Ladino"
+            "\n- Mago"
+            "\n- Monge"
+            "\n- Paladino"
+            "\n- Patrulheiro"
+            "\n\nR: "
+        ).strip().lower()
+
+        if classe not in CLASSES_DADO_VIDA:
+            print("Classe inválida!")
+            continue
+
+        nivel = pedir_nivel()
+
+        confirma = input(
+            f"Tem certeza que deseja ser {classe.title()} Nível {nivel}? (s/n): "
+        ).strip().lower()
+
+        if confirma == "s":
+            return classe, nivel
+
+
+def rolar_atributo():
+    dados = [random.randint(1, 6) for _ in range(4)]
+    dados.remove(min(dados))
+    return sum(dados)
+
+
+def distribuir_aleatorio():
+    atributos = {}
+    rolagens = sorted([rolar_atributo() for _ in range(6)], reverse=True)
+
+    print(f"\nSeus 6 valores gerados foram: {rolagens}")
+
+    pendentes = ATRIBUTOS_BASE.copy()
+
+    for valor in rolagens:
+        while True:
+            escolha = input(
+                f"Escolha qual atributo receberá o valor {valor} "
+                f"({', '.join(pendentes)}): "
+            ).strip().lower()
+
+            if escolha in pendentes:
+                atributos[escolha] = valor
+                pendentes.remove(escolha)
+                break
+
+            print("Atributo inválido ou já preenchido!")
+
+    return atributos
+
+
+def distribuir_padrao():
+    valores_padrao = [15, 14, 13, 12, 10, 8]
+
+    print(f"\nOs valores padrão são: {valores_padrao}")
+
+    while True:
+        entrada = input(
+            "Digite os 6 atributos separados por vírgula na ordem do maior "
+            "para o menor valor\n"
+            "(Ex: força, destreza, constituição, inteligência, sabedoria, carisma):\n"
+            "R: "
+        ).strip().lower()
+
+        lista = [a.strip() for a in entrada.split(",")]
+
+        if len(lista) == 6 and set(lista) == set(ATRIBUTOS_BASE):
+            return dict(zip(lista, valores_padrao))
+
+        print(
+            "Entrada inválida! Certifique-se de listar exatamente os 6 "
+            "atributos sem repetir."
+        )
+
+
+def distribuir_compra():
+    tabela_custos = {
+        8: 0,
+        9: 1,
+        10: 2,
+        11: 3,
+        12: 4,
+        13: 5,
+        14: 7,
+        15: 9,
+    }
+
+    atributos = {atributo: 8 for atributo in ATRIBUTOS_BASE}
+    pontos_restantes = 27
+
+    while True:
+        print("\n" + "-" * 40)
+        print(f"Pontos restantes: {pontos_restantes}")
+
+        for nome, valor in atributos.items():
+            print(f"  {nome.title()}: {valor}")
+
+        if pontos_restantes == 0:
+            confirma = input(
+                "\nVocê gastou todos os pontos! Deseja finalizar? (s/n): "
+            ).strip().lower()
+
+            if confirma == "s":
+                return atributos
+
+        escolha = input(
+            "\nQual atributo deseja alterar (ou 'fim' para terminar)? "
+        ).strip().lower()
+
+        if escolha == "fim":
+            return atributos
+
+        if escolha not in atributos:
+            print("Atributo inválido!")
+            continue
+
+        try:
+            novo_valor = int(
+                input(f"Digite o novo valor para {escolha.title()} (8 a 15): ")
+            )
+        except ValueError:
+            print("Por favor, digite um número inteiro válido.")
+            continue
+
+        if novo_valor not in tabela_custos:
+            print("Valor inválido! Deve ser entre 8 e 15.")
+            continue
+
+        custo_atual = tabela_custos[atributos[escolha]]
+        custo_novo = tabela_custos[novo_valor]
+        diferenca = custo_novo - custo_atual
+
+        if diferenca > pontos_restantes:
+            print(
+                f"Pontos insuficientes! Faltam "
+                f"{diferenca - pontos_restantes} ponto(s)."
+            )
+            continue
+
+        atributos[escolha] = novo_valor
+        pontos_restantes -= diferenca
+
+
+def escolher_atributo_especial(atributos, quantidade, escolhidos=None):
+    if escolhidos is None:
+        escolhidos = []
+
+    for _ in range(quantidade):
+        while True:
+            escolha = input(
+                f"Escolha um atributo para receber +1 "
+                f"(opções: {', '.join(ATRIBUTOS_BASE)}): "
+            ).strip().lower()
+
+            if escolha not in ATRIBUTOS_BASE:
+                print("Atributo inválido!")
+                continue
+
+            if escolha in escolhidos:
+                print("Você precisa escolher um atributo diferente!")
+                continue
+
+            atributos[escolha] += 1
+            escolhidos.append(escolha)
+            break
+
+
+def bonus_raca(atributos, raca):
+    if raca in SUB_RACAS:
+        for atributo, valor in SUB_RACAS[raca].items():
+            atributos[atributo] += valor
+
+    elif raca == "humano (comum)":
+        for atributo in ATRIBUTOS_BASE:
+            atributos[atributo] += 1
+
+    elif raca == "humano (variante)":
+        escolher_atributo_especial(atributos, 2)
+
+    elif raca == "meio-elfo":
+        atributos["carisma"] += 2
+        escolher_atributo_especial(atributos, 2)
+
+
+def distribuir_atributos():
+    while True:
+        forma = input(
+            "\nDigite qual forma deseja distribuir seus pontos "
+            "(Aleatorio / Padrão / Compra): "
+        ).strip().lower()
+
+        if forma in ("aleatorio", "aleatório"):
+            atributos = distribuir_aleatorio()
+
+        elif forma in ("padrão", "padrao"):
+            atributos = distribuir_padrao()
+
+        elif forma == "compra":
+            atributos = distribuir_compra()
+
+        else:
+            print("Opção inválida!")
+            continue
+
+        confirma = input(
+            "\nTem certeza da sua escolha de distribuição? (s/n): "
+        ).strip().lower()
+
+        if confirma == "s":
+            return atributos
+
+
+def calcular_modificadores(atributos):
+    return {
+        atributo: (valor - 10) // 2
+        for atributo, valor in atributos.items()
+    }
+
+
+def pedir_descricao():
+    while True:
+        print("Descreva seu personagem seguindo as instruções.")
+
+        descricao = input(
+            "Descreva:\n"
+            "1- aparência física (corpo, roupas e armadura)\n"
+            "2- personalidade (modo de agir e reagir em determinadas situações)\n"
+            "3- objetivo pessoal\n"
+            "4- um grande defeito e uma grande virtude\n"
+            "R: "
+        )
+
+        confirma = input(
+            "Essa é a descrição que deseja colocar no personagem? (s/n) "
+        ).strip().lower()
+
+        if confirma == "s":
+            return descricao
+
+
+def escolher_armadura_e_arma_marcial():
+    itens = []
+
+    while True:
+        escolha_armadura = input(
+            "Deseja (1) uma cota de malha, ou "
+            "(2) uma armadura de couro? Digite 1 ou 2: "
+        ).strip()
+
+        if escolha_armadura == "1":
+            itens.append("cota de malha")
+            break
+
+        if escolha_armadura == "2":
+            itens.append("armadura de couro")
+            itens.append("arco longo")
+            break
+
+        print("Escolha inválida!")
+
+    while True:
+        escolha_arma = input(
+            "Deseja (1) uma arma marcial e um escudo, ou "
+            "(2) duas armas marciais? Digite 1 ou 2: "
+        ).strip()
+
+        if escolha_arma == "1":
+            itens.append(input("Digite a arma marcial escolhida: ").strip())
+            itens.append("escudo")
+            break
+
+        if escolha_arma == "2":
+            itens.append(input("Digite a primeira arma marcial escolhida: ").strip())
+            itens.append(input("Digite a segunda arma marcial escolhida: ").strip())
+            break
+
+        print("Escolha inválida!")
+
+    return itens
+
+
+def equipamentos_guerreiro():
+    itens = escolher_armadura_e_arma_marcial()
+
+    while True:
+        pacote = input(
+            "Um pacote de masmorreiro ou um pacote de explorador: "
+        ).strip().lower()
+
+        if pacote in ("pacote de masmorreiro", "pacote de explorador"):
+            itens.append(pacote)
+            break
+
+        print("Opção inválida!")
+
+    return itens
+
+
+def equipamentos_paladino():
+    itens = []
+
+    while True:
+        escolha_arma = input(
+            "Deseja (1) uma arma marcial e um escudo, ou "
+            "(2) duas armas marciais? Digite 1 ou 2: "
+        ).strip()
+
+        if escolha_arma == "1":
+            itens.append(input("Digite a arma marcial escolhida: ").strip())
+            itens.append("escudo")
+            break
+
+        if escolha_arma == "2":
+            itens.append(input("Digite a primeira arma marcial escolhida: ").strip())
+            itens.append(input("Digite a segunda arma marcial escolhida: ").strip())
+            break
+
+        print("Escolha inválida!")
+
+    itens.append(input("Cinco azagaias ou qualquer arma simples: ").strip())
+    itens.append(input("Pacote de sacerdote ou pacote de explorador: ").strip())
+    itens.append("cota de malha")
+    itens.append("um símbolo sagrado")
+
+    return itens
+
+
+def escolher_equipamentos(classe):
+    if classe == "guerreiro":
+        return equipamentos_guerreiro()
+
+    if classe == "paladino":
+        return equipamentos_paladino()
+
+    itens = []
+
+    for pergunta, fixo in EQUIPAMENTOS_POR_CLASSE[classe]:
+        if fixo is not None:
+            itens.append(fixo)
+        else:
+            itens.append(input(pergunta).strip())
+
+    return itens
+
+
+def confirmar_equipamentos(classe):
+    while True:
+        print(
+            "Escolha seus itens iniciais. Sempre que aparecer "
+            "'(escreva)' na pergunta, digite o item desejado."
+        )
+
+        itens = escolher_equipamentos(classe)
+
+        confirma = input(
+            "Esses são os equipamentos iniciais que deseja? (s/n) "
+        ).strip().lower()
+
+        if confirma == "s":
+            return itens
+
+
+def calcular_pv(dado_vida, nivel, modificador_constituicao):
+    pv_nivel_1 = dado_vida + modificador_constituicao
+
+    pv_por_nivel = [
+        max(1, random.randint(1, dado_vida) + modificador_constituicao)
+        for _ in range(nivel - 1)
+    ]
+
+    return pv_nivel_1 + sum(pv_por_nivel)
+
+
+def montar_ficha():
+    print("=====| CRIAR FICHA DUNGEONS & DRAGONS |=====")
+
+    raca = escolher_raca()
+    classe, nivel = escolher_classe()
+
+    dado_vida_base = CLASSES_DADO_VIDA[classe]
+    dado_vida_texto = f"{nivel}d{dado_vida_base}"
+    proficiencia = calcular_proficiencia(nivel)
+
+    atributos = distribuir_atributos()
+
+    bonus_raca(atributos, raca)
+
+    modificadores = calcular_modificadores(atributos)
+
+    pv = calcular_pv(
+        dado_vida_base,
+        nivel,
+        modificadores["constituição"],
+    )
+
+    descricao = pedir_descricao()
+    equipamentos = confirmar_equipamentos(classe)
+
+    print("\n===== FICHA CRIADA =====")
+    print(f"Raça: {raca.title()}")
+    print(f"Classe: {classe.title()} - Nível {nivel}")
+    print(f"Dado de vida: {dado_vida_texto}")
+    print(f"Bônus de proficiência: +{proficiencia}")
+    print(f"Pontos de vida: {pv}")
+
+    print("\nAtributos (Modificadores):")
+
+    for atributo in ATRIBUTOS_BASE:
+        valor = atributos[atributo]
+        mod = modificadores[atributo]
+        sinal = "+" if mod >= 0 else ""
+        print(f"  {atributo.title()}: {valor} ({sinal}{mod})")
+
+    print(f"\nDescrição:\n{descricao}")
+
+    print("\nEquipamentos iniciais:")
+
+    for item in equipamentos:
+        print(f"  - {item}")
+
+
+if __name__ == "__main__":
+    montar_ficha()
