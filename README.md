@@ -5,7 +5,7 @@ Ferret ART é uma plataforma criada com o objetivo de ser o melhor amigo do arti
 A ideia nasceu de uma dificuldade que muitos artistas autodidatas podem encontrar durante sua jornada: estudar sozinho pode ser confuso. Quando não existe alguém para orientar o caminho, é fácil passar horas praticando sem saber exatamente o que estudar, qual deveria ser o próximo passo ou até mesmo se você realmente está evoluindo.
 
 O Ferret ART foi pensado para ser um espaço onde o artista possa aprender, praticar, acompanhar sua própria evolução, organizar seus trabalhos e compartilhar conhecimento com outras pessoas.
-
+https://chatgpt.com/s/m_6aa825fbba288191add18eff079e6d35
 A plataforma possui diferentes áreas para acompanhar diferentes partes da vida de um artista. Na Galeria, o usuário pode guardar suas artes, estudos, rabiscos e ideias em um espaço próprio, adicionando informações e descrições aos trabalhos. A intenção não é apenas criar um portfólio, mas também permitir que o artista tenha um registro da própria trajetória e possa olhar para desenhos antigos e novos lado a lado para perceber mudanças e evoluções que muitas vezes são difíceis de enxergar enquanto estamos praticando.
 
 A área de Estudos é uma das partes principais do Ferret ART. Nela, o artista poderá procurar assuntos que deseja aprender, como anatomia, perspectiva, luz e sombra, teoria das cores, desenho de personagens e muitos outros temas. Cada assunto poderá possuir planos de estudos organizados em dias, com explicações, exercícios e materiais de apoio, como vídeos e livros. O progresso também poderá ser acompanhado, permitindo que o artista continue de onde parou em vez de precisar começar tudo novamente.
