@@ -1,0 +1,3 @@
+O Ferret ART é uma plataforma criada por e para artistas autodidatas com o objetivo de orientar e organizar sua jornada de aprendizado. 
+Para solucionar a confusão do estudo autônomo, o projeto reúne uma Galeria para registro do progresso individual, uma área de Estudos com planos passo a passo (anatomia, perspectiva, teoria das cores) e conteúdos colaborativos, além de uma Comunidade focada no apoio mútuo, troca de experiências e comissões, distanciando-se do foco tradicional em curtidas. 
+Em constante desenvolvimento como um projeto independente, a ferramenta busca ser o suporte completo para a evolução constante de criadores iniciantes e experientes.
